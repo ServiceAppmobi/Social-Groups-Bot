@@ -27,7 +27,7 @@ def load_env_file():
 load_env_file()
 
 from analyzer import LeadAnalyzer
-from config import EMAIL_RECIPIENT, GOOGLE_PLAY_URL, WEBHOOK_PORT
+from config import COUNTRIES, EMAIL_RECIPIENT, GOOGLE_PLAY_URL, WEBHOOK_PORT, get_country_info
 from database import get_stats, init_db, is_post_seen, mark_notified, save_lead
 from gemini_client import GeminiAPIError, GeminiClient
 from notifiers import (
@@ -116,7 +116,7 @@ def main():
     parser.add_argument("--webhook", action="store_true", help="Uruchamia serwer webhooków (WhatsApp/FB/TikTok) + panel HTML")
     parser.add_argument("--port", type=int, default=WEBHOOK_PORT, help="Port serwera webhooków (domyślnie 8089)")
     parser.add_argument("--import-whatsapp", metavar="FILE", help="Analizuje plik .txt wyeksportowany z grupy WhatsApp")
-    parser.add_argument("--country", choices=["BR", "MX"], default="BR", help="Kraj dla --import-whatsapp (domyślnie BR)")
+    parser.add_argument("--country", choices=sorted(COUNTRIES.keys()), default="BR", help="Kod kraju dla --import-whatsapp (np. BR, MX, AR, CO, US, CA, SG, JP)")
     parser.add_argument("--test-gemini", action="store_true", help="Testuje połączenie z Gemini Interactions API")
     parser.add_argument("--stats", action="store_true", help="Wyświetla statystyki bazy leads.db")
 
@@ -125,13 +125,14 @@ def main():
     if args.stats:
         init_db()
         s = get_stats()
-        print("\n📊 STATYSTYKI SERVICEAPP SOCIAL GROUPS BOT:")
+        print("\n📊 STATYSTYKI SERVICEAPP SOCIAL GROUPS BOT (17 krajów):")
         print(f"  • Łącznie leadów:   {s['total']}")
         print(f"  • 🟢 WhatsApp:      {s['whatsapp']}")
         print(f"  • 🔵 Facebook:      {s['facebook']}")
         print(f"  • 🎵 TikTok:        {s['tiktok']}")
-        print(f"  • 🇧🇷 Brazylia:      {s['brazil']}")
-        print(f"  • 🇲🇽 Meksyk:        {s['mexico']}")
+        for code, cnt in (s.get("by_country") or {}).items():
+            ci = get_country_info(code)
+            print(f"  • {ci['flag']} {ci['name']} ({code}): {cnt}")
         print(f"  • Wysłane alerty:   {s['notified']}")
         print(f"  • Google Play URL:  {GOOGLE_PLAY_URL}")
         return

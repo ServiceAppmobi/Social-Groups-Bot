@@ -87,5 +87,7 @@ def get_stats() -> dict:
     for key, sql in queries.items():
         cur.execute(sql)
         stats[key] = cur.fetchone()[0]
+    cur.execute("SELECT country, COUNT(*) FROM leads GROUP BY country ORDER BY COUNT(*) DESC")
+    stats["by_country"] = {row[0] or "BR": row[1] for row in cur.fetchall()}
     conn.close()
     return stats

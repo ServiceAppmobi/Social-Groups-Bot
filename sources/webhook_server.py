@@ -5,7 +5,56 @@ import time
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from typing import Any, Callable, Dict, Optional
 
-from config import WEBHOOK_PORT, WEBHOOK_SECRET
+from config import COUNTRIES, WEBHOOK_PORT, WEBHOOK_SECRET
+
+PHONE_PREFIX_TO_COUNTRY = [
+    ("593", "EC"), ("598", "UY"), ("595", "PY"), ("591", "BO"), ("592", "GY"), ("597", "SR"),
+    ("55", "BR"), ("52", "MX"), ("54", "AR"), ("57", "CO"), ("56", "CL"), ("51", "PE"),
+    ("58", "VE"), ("65", "SG"), ("81", "JP"),
+]
+
+
+def _detect_country(sender_phone: str, channel: str, body: str) -> str:
+    digits = "".join(ch for ch in sender_phone if ch.isdigit())
+    for prefix, code in PHONE_PREFIX_TO_COUNTRY:
+        if digits.startswith(prefix):
+            return code
+    hint = f"{channel} {body}".lower()
+    if any(w in hint for w in ("singapore", "aircon", "hdb")):
+        return "SG"
+    if any(w in hint for w in ("tokyo", "osaka", "japan", "水道", "電気工事", "便利屋", "ハウスクリーニング")):
+        return "JP"
+    if any(w in hint for w in ("canada", "toronto", "vancouver", "montreal", "quebec", "calgary", "plombier")):
+        return "CA"
+    if any(w in hint for w in ("usa", "new york", "texas", "california", "florida", "chicago", "handyman")):
+        return "US"
+    if any(w in hint for w in ("argentina", "buenos aires", "cordoba", "laburo")):
+        return "AR"
+    if any(w in hint for w in ("colombia", "bogota", "medellin", "camello")):
+        return "CO"
+    if any(w in hint for w in ("chile", "santiago", "gasfiter")):
+        return "CL"
+    if any(w in hint for w in ("peru", "lima")):
+        return "PE"
+    if any(w in hint for w in ("ecuador", "quito", "guayaquil")):
+        return "EC"
+    if any(w in hint for w in ("venezuela", "caracas")):
+        return "VE"
+    if any(w in hint for w in ("uruguay", "montevideo")):
+        return "UY"
+    if any(w in hint for w in ("paraguay", "asuncion")):
+        return "PY"
+    if any(w in hint for w in ("bolivia", "la paz", "santa cruz")):
+        return "BO"
+    if "guyana" in hint:
+        return "GY"
+    if "suriname" in hint:
+        return "SR"
+    if any(w in hint for w in ("mexico", "méxico", "cdmx", "monterrey", "guadalajara", "chamba", "plomero")):
+        return "MX"
+    if digits.startswith("1"):
+        return "US"
+    return "BR"
 
 
 def normalize_webhook_payload(platform: str, data: Dict[str, Any]) -> Optional[Dict[str, Any]]:
@@ -30,12 +79,8 @@ def normalize_webhook_payload(platform: str, data: Dict[str, Any]) -> Optional[D
     author = data.get("pushName") or data.get("senderName") or data.get("author") or "usuario"
     sender_phone = str(data.get("sender") or data.get("phone") or "")
     country = (data.get("country") or "").upper()
-    if country not in ("BR", "MX"):
-        hint = f"{sender_phone} {channel} {body}".lower()
-        if sender_phone.startswith("52") or any(w in hint for w in ("mexico", "méxico", "cdmx", "monterrey", "guadalajara", "chamba", "plomero")):
-            country = "MX"
-        else:
-            country = "BR"
+    if country not in COUNTRIES:
+        country = _detect_country(sender_phone, str(channel), body)
 
     raw_id = str(data.get("id") or "")
     if not raw_id:

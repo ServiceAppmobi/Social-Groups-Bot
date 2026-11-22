@@ -55,6 +55,27 @@ class TestSocialGroupsBot(unittest.TestCase):
         self.assertEqual(tt["platform"], "tiktok")
         self.assertEqual(tt["country"], "MX")
 
+    def test_global_countries_singapore_japan_us_canada_south_america(self):
+        from config import COUNTRIES, PUBLIC_RSS_QUERIES
+
+        expected = {"BR", "MX", "AR", "CO", "CL", "PE", "EC", "VE", "UY", "PY", "BO", "GY", "SR", "US", "CA", "SG", "JP"}
+        self.assertTrue(expected.issubset(set(COUNTRIES.keys())))
+        rss_countries = {q["country"] for q in PUBLIC_RSS_QUERIES}
+        self.assertTrue(expected.issubset(rss_countries))
+
+        analyzer = LeadAnalyzer(api_key="")
+        for code, text in [
+            ("SG", "Looking for a reliable handyman or aircon servicing in Singapore"),
+            ("JP", "東京でおすすめの水道修理業者を探しています"),
+            ("US", "Need a plumber in Dallas for kitchen leak"),
+            ("CA", "Looking for a good electrician in Toronto"),
+            ("CO", "Busco plomero urgente en Bogotá"),
+            ("PE", "Busco gasfitero en Lima"),
+        ]:
+            lt, draft = analyzer.analyze(text, text, country=code, platform="facebook")
+            self.assertEqual(lt, "SERVICE_SEEKER", f"Failed for {code}")
+            self.assertIn(GOOGLE_PLAY_URL, draft)
+
 
 if __name__ == "__main__":
     unittest.main()

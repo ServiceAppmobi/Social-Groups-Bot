@@ -16,6 +16,7 @@ from config import (
     RESEND_API_KEY,
     TELEGRAM_BOT_TOKEN,
     TELEGRAM_CHAT_ID,
+    get_country_info,
 )
 
 PLATFORM_BADGES = {
@@ -26,7 +27,8 @@ PLATFORM_BADGES = {
 
 
 def print_lead(lead: Dict[str, Any]):
-    flag = "🇧🇷 [BRAZYLIA]" if lead.get("country") == "BR" else "🇲🇽 [MEKSYK]"
+    cinfo = get_country_info(lead.get("country", "BR"))
+    flag = f"{cinfo['flag']} [{cinfo['name'].upper()}]"
     role = (
         "[KLIENT SZUKA FACHOWCA]"
         if lead.get("lead_type") == "SERVICE_SEEKER"
@@ -40,7 +42,7 @@ def print_lead(lead: Dict[str, Any]):
     snippet = lead.get("content_snippet", "")
     if snippet:
         print(f'📄 "{textwrap.shorten(snippet, width=180, placeholder="...")}"')
-    print("\n💬 Gotowa odpowiedź (zawiera link Google Play):")
+    print(f"\n💬 Gotowa odpowiedź ({cinfo['lang_label']}, zawiera link Google Play):")
     print(textwrap.fill(lead.get("ai_draft", ""), width=78))
     print("=" * 80)
 
@@ -49,15 +51,19 @@ def send_email_digest(leads: List[Dict[str, Any]]) -> bool:
     if not leads or not RESEND_API_KEY:
         return False
 
-    br_count = sum(1 for l in leads if l.get("country") == "BR")
-    mx_count = sum(1 for l in leads if l.get("country") == "MX")
-    subject = f"📱 [{APP_NAME}] {len(leads)} leadów WhatsApp/FB/TikTok (🇧🇷 {br_count} | 🇲🇽 {mx_count})"
+    counts = {}
+    for l in leads:
+        c = l.get("country", "BR")
+        counts[c] = counts.get(c, 0) + 1
+    summary = " | ".join(f"{get_country_info(c)['flag']} {c}: {n}" for c, n in counts.items())
+    subject = f"📱 [{APP_NAME}] {len(leads)} leadów WhatsApp/FB/TikTok ({summary})"
 
     cards = []
     text_lines = [f"{APP_NAME} — nowe leady (Google Play: {GOOGLE_PLAY_URL}):\n"]
     for idx, lead in enumerate(leads, 1):
         badge = PLATFORM_BADGES.get(lead.get("platform", ""), "🌐 Social")
-        flag = "🇧🇷 Brazylia" if lead.get("country") == "BR" else "🇲🇽 Meksyk"
+        cinfo = get_country_info(lead.get("country", "BR"))
+        flag = f"{cinfo['flag']} {cinfo['name']}"
         cards.append(
             f"""
             <div style="border:1px solid #e2e8f0;border-radius:8px;padding:16px;margin-bottom:16px;">
