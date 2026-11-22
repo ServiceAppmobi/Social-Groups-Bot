@@ -1,0 +1,66 @@
+name: 📱 ServiceApp Social Groups Bot (WhatsApp / Facebook / TikTok)
+
+on:
+  schedule:
+    - cron: '0 */4 * * *'
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'Tryb uruchomienia bota'
+        required: true
+        default: 'live'
+        type: choice
+        options:
+          - live
+          - mock
+          - test-gemini
+
+jobs:
+  scan-social-groups:
+    name: Skanowanie publicznych wzmianek FB / TikTok / WhatsApp (BR & MX)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Przywróć bazę leads.db
+        uses: actions/cache/restore@v4
+        with:
+          path: leads.db
+          key: social-groups-db-${{ github.run_id }}
+          restore-keys: |
+            social-groups-db-
+
+      - name: Uruchom bota
+        env:
+          APP_NAME: ${{ secrets.APP_NAME }}
+          APP_URL: ${{ secrets.APP_URL }}
+          GOOGLE_PLAY_URL: ${{ vars.GOOGLE_PLAY_URL || 'https://play.google.com/store/apps/details?id=pl.serviceapp&pli=1' }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          EMAIL_RECIPIENT: ${{ secrets.EMAIL_RECIPIENT }}
+          EMAIL_SENDER: ${{ secrets.EMAIL_SENDER }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_MODEL: ${{ vars.GEMINI_MODEL || 'gemini-3.5-flash-lite' }}
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          MODE="${{ inputs.mode || 'live' }}"
+          if [ "$MODE" = "mock" ]; then
+            python3 main.py --mock
+          elif [ "$MODE" = "test-gemini" ]; then
+            python3 main.py --test-gemini
+          else
+            python3 main.py
+          fi
+
+      - name: Zapisz bazę leads.db
+        if: always() && hashFiles('leads.db') != ''
+        uses: actions/cache/save@v4
+        with:
+          path: leads.db
+          key: social-groups-db-${{ github.run_id }}
