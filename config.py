@@ -80,8 +80,8 @@ DB_PATH = os.path.join(os.path.dirname(__file__), "leads.db")
 
 # Domyślnie: wszystkie pozostałe radary wstrzymane (on hold), aktywny wyłącznie fokus na São Paulo.
 # Aby wznowić wszystkie 17 krajów: ACTIVE_COUNTRIES=ALL oraz CITY_FILTER=
-ACTIVE_COUNTRIES_RAW = (os.getenv("ACTIVE_COUNTRIES") or "BR").strip()
-CITY_FILTER = (os.getenv("CITY_FILTER") if os.getenv("CITY_FILTER") is not None else "São Paulo").strip()
+ACTIVE_COUNTRIES_RAW = (os.getenv("ACTIVE_COUNTRIES") or "ALL").strip()
+CITY_FILTER = (os.getenv("CITY_FILTER") if os.getenv("CITY_FILTER") is not None else "").strip()
 SAO_PAULO_TERMS = (
     "são paulo",
     "sao paulo",
