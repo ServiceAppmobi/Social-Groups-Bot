@@ -3,17 +3,20 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ServiceApp — Global Radar Grup (Facebook, TikTok &amp; WhatsApp)</title>
+  <title>ServiceApp — Radar São Paulo Only (pozostałe radary On Hold)</title>
   <style>
     body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #0f172a; color: #f8fafc; margin: 0; padding: 24px; }
     .wrap { max-width: 1080px; margin: 0 auto; }
     h1 { margin: 0 0 8px 0; font-size: 24px; }
-    .sub { color: #94a3b8; margin: 0 0 20px 0; font-size: 14px; }
+    .sub { color: #94a3b8; margin: 0 0 16px 0; font-size: 14px; }
+    .status-bar { background: #78350f; border: 1px solid #f59e0b; color: #fef3c7; border-radius: 10px; padding: 12px 16px; margin-bottom: 16px; font-size: 14px; }
     .play-bar { background: #166534; border: 1px solid #22c55e; border-radius: 10px; padding: 14px 18px; margin-bottom: 24px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; }
     .play-bar a { color: #dcfce7; font-weight: 700; word-break: break-all; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 16px; margin-bottom: 24px; }
+    .sp-section { border: 2px solid #22c55e; background: #0b2419; border-radius: 14px; padding: 20px; margin-bottom: 24px; }
+    .sp-section h2.section-title { margin: 0 0 14px 0; font-size: 20px; color: #86efac; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 16px; margin-bottom: 16px; }
     .card { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 18px; }
-    .card h2 { margin: 0 0 12px 0; font-size: 16px; }
+    .card h2, .card h3 { margin: 0 0 12px 0; font-size: 16px; }
     .links { display: flex; flex-direction: column; gap: 8px; }
     .links a { background: #334155; color: #e2e8f0; text-decoration: none; padding: 9px 12px; border-radius: 8px; font-size: 13px; }
     .links a:hover { background: #2563eb; color: #fff; }
@@ -21,87 +24,100 @@
     button { margin-top: 8px; background: #2563eb; color: #fff; border: 0; border-radius: 8px; padding: 8px 14px; font-weight: 600; cursor: pointer; }
     button:hover { background: #1d4ed8; }
     .ok { color: #4ade80; font-size: 12px; margin-left: 8px; }
+    details.on-hold { background: #111827; border: 1px dashed #475569; border-radius: 12px; padding: 16px; opacity: 0.85; }
+    details.on-hold summary { cursor: pointer; font-weight: 700; color: #cbd5e1; font-size: 15px; }
+    details.on-hold .grid { margin-top: 16px; }
   </style>
 </head>
 <body>
   <div class="wrap">
-    <h1>🌎 ServiceApp — Global Radar Grup (17 krajów: Ameryka Płd., USA, Kanada, Singapur, Japonia)</h1>
-    <p class="sub">1-klikowe wyszukiwanie zapytań o usługi i pracę na Facebooku i TikToku + gotowe wielojęzyczne odpowiedzi z linkiem Google Play (0 zł, bez blokad konta).</p>
+    <h1>📍 ServiceApp — Radar: São Paulo Only</h1>
+    <p class="sub">Aktywny wyłącznie obszar <strong>São Paulo (SP, Brazylia)</strong>. Pozostałe radary (16 krajów) zostały ustawione w tryb <strong>On Hold</strong>.</p>
+
+    <div class="status-bar">
+      ⏸️ <strong>Status radarów:</strong> Wszystkie harmonogramy automatyczne w GitHub Actions są wstrzymane (<strong>On Hold</strong>). Aktywny filtr wyszukiwania w obu botach i w tym panelu: <strong>São Paulo Only</strong>.
+    </div>
 
     <div class="play-bar">
       <div><strong>Google Play ServiceApp:</strong> <a href="https://play.google.com/store/apps/details?id=pl.serviceapp&pli=1" target="_blank">https://play.google.com/store/apps/details?id=pl.serviceapp&amp;pli=1</a></div>
       <div><button onclick="copyText('https://play.google.com/store/apps/details?id=pl.serviceapp&pli=1', 'play-ok')">Kopiuj link</button><span id="play-ok" class="ok"></span></div>
     </div>
 
-    <div class="grid">
-      <div class="card">
-        <h2>🇧🇷 Brazylia (PT-BR)</h2>
-        <div class="links">
-          <a target="_blank" href="https://www.facebook.com/search/posts/?q=preciso%20de%20encanador">FB: "preciso de encanador"</a>
-          <a target="_blank" href="https://www.facebook.com/search/posts/?q=indica%C3%A7%C3%A3o%20de%20diarista">FB: "indicação de diarista"</a>
-          <a target="_blank" href="https://www.tiktok.com/search?q=trabalho%20autonomo%20brasil">TikTok: trabalho autônomo brasil</a>
+    <div class="sp-section">
+      <h2 class="section-title">🇧🇷 Aktywny element: Szukaj TYLKO w São Paulo (SP)</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>🔵 Facebook Grupy &amp; Posty — São Paulo</h3>
+          <div class="links">
+            <a target="_blank" href="https://www.facebook.com/search/posts/?q=preciso%20de%20encanador%20s%C3%A3o%20paulo">FB SP: "preciso de encanador são paulo"</a>
+            <a target="_blank" href="https://www.facebook.com/search/posts/?q=preciso%20de%20eletricista%20s%C3%A3o%20paulo">FB SP: "preciso de eletricista são paulo"</a>
+            <a target="_blank" href="https://www.facebook.com/search/posts/?q=indica%C3%A7%C3%A3o%20de%20diarista%20s%C3%A3o%20paulo">FB SP: "indicação de diarista são paulo"</a>
+            <a target="_blank" href="https://www.facebook.com/search/posts/?q=indica%C3%A7%C3%A3o%20de%20pedreiro%20zona%20sul%20sp">FB SP: "indicação de pedreiro zona sul sp"</a>
+            <a target="_blank" href="https://www.facebook.com/search/groups/?q=servi%C3%A7os%20aut%C3%B4nomos%20s%C3%A3o%20paulo">FB Grupy: Serviços autônomos São Paulo</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>🎵 TikTok — São Paulo</h3>
+          <div class="links">
+            <a target="_blank" href="https://www.tiktok.com/search?q=encanador%20sao%20paulo">TikTok SP: encanador são paulo</a>
+            <a target="_blank" href="https://www.tiktok.com/search?q=eletricista%20sao%20paulo">TikTok SP: eletricista são paulo</a>
+            <a target="_blank" href="https://www.tiktok.com/search?q=diarista%20sao%20paulo">TikTok SP: diarista são paulo</a>
+            <a target="_blank" href="https://www.tiktok.com/search?q=trabalho%20autonomo%20sao%20paulo">TikTok SP: trabalho autônomo são paulo</a>
+            <a target="_blank" href="https://www.tiktok.com/search?q=como%20conseguir%20clientes%20sao%20paulo">TikTok SP: como conseguir clientes sp</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>🟢 WhatsApp &amp; Lokalne — São Paulo</h3>
+          <div class="links">
+            <a target="_blank" href="https://www.google.com/search?q=site:chat.whatsapp.com+%22S%C3%A3o+Paulo%22+(servi%C3%A7os+OR+trampo+OR+diarista+OR+eletricista)">Google: Grupy WhatsApp São Paulo (usługi)</a>
+            <a target="_blank" href="https://www.reddit.com/r/saopaulo/search/?q=encanador+OR+eletricista+OR+diarista+OR+pedreiro&sort=new">Reddit r/saopaulo (nowe zapytania)</a>
+            <a target="_blank" href="https://mastodon.social/tags/saopaulo">Mastodon #saopaulo</a>
+          </div>
         </div>
       </div>
 
-      <div class="card">
-        <h2>🇲🇽🇦🇷🇨🇴🇨🇱🇵🇪 Ameryka Łacińska (ES)</h2>
-        <div class="links">
-          <a target="_blank" href="https://www.facebook.com/search/posts/?q=busco%20plomero%20o%20electricista">FB: "busco plomero o electricista"</a>
-          <a target="_blank" href="https://www.facebook.com/search/posts/?q=busco%20gasfitero%20o%20gasista">FB: "busco gasfitero / gasista" (CL/PE/AR)</a>
-          <a target="_blank" href="https://www.tiktok.com/search?q=busco%20chamba%20laburo%20oficios">TikTok: busco chamba / laburo / oficios</a>
+      <div class="grid">
+        <div class="card">
+          <h3>🇧🇷 Odpowiedź PT-BR — Klient (São Paulo)</h3>
+          <textarea id="sp-client">Olá! Se ainda estiver procurando profissional em São Paulo, dá uma olhada no ServiceApp (Google Play: https://play.google.com/store/apps/details?id=pl.serviceapp&pli=1 | Site: https://serviceapp.mobi). Dá para pedir orçamentos grátis e comparar avaliações de prestadores na sua região em SP!</textarea>
+          <button onclick="copyEl('sp-client', 'ok-sp1')">Kopiuj PT-BR (Klient SP)</button><span id="ok-sp1" class="ok"></span>
         </div>
-      </div>
-
-      <div class="card">
-        <h2>🇺🇸🇨🇦 USA &amp; Kanada (EN / FR)</h2>
-        <div class="links">
-          <a target="_blank" href="https://www.facebook.com/search/posts/?q=recommend%20a%20good%20plumber%20or%20handyman">FB: "recommend a good plumber / handyman"</a>
-          <a target="_blank" href="https://www.facebook.com/search/posts/?q=cherche%20un%20plombier%20montreal">FB (CA-FR): "cherche un plombier montreal"</a>
-          <a target="_blank" href="https://www.tiktok.com/search?q=handyman%20how%20to%20get%20clients">TikTok: handyman how to get clients</a>
-        </div>
-      </div>
-
-      <div class="card">
-        <h2>🇸🇬 Singapur (EN)</h2>
-        <div class="links">
-          <a target="_blank" href="https://www.facebook.com/search/posts/?q=recommend%20handyman%20singapore">FB: "recommend handyman singapore"</a>
-          <a target="_blank" href="https://www.facebook.com/search/posts/?q=aircon%20servicing%20singapore%20recommend">FB: "aircon servicing singapore recommend"</a>
-          <a target="_blank" href="https://www.tiktok.com/search?q=singapore%20handyman%20aircon%20plumber">TikTok: singapore handyman / aircon</a>
-        </div>
-      </div>
-
-      <div class="card">
-        <h2>🇯🇵 Japonia (日本語 / EN)</h2>
-        <div class="links">
-          <a target="_blank" href="https://www.facebook.com/search/posts/?q=%E6%B0%B4%E9%81%93%E4%BF%AE%E7%90%86%20%E3%81%8A%E3%81%99%E3%81%99%E3%82%81">FB (JA): "水道修理 おすすめ"</a>
-          <a target="_blank" href="https://www.facebook.com/search/posts/?q=recommend%20handyman%20tokyo">FB (EN): "recommend handyman tokyo"</a>
-          <a target="_blank" href="https://www.tiktok.com/search?q=%E4%BE%BF%E5%88%A9%E5%B1%8B%20%E3%83%8F%E3%82%A6%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%8B%E3%83%B3%E3%82%B0">TikTok (JA): 便利屋 / ハウスクリーニング</a>
+        <div class="card">
+          <h3>🇧🇷 Odpowiedź PT-BR — Fachowiec (São Paulo)</h3>
+          <textarea id="sp-worker">Fala parceiro! Para conseguir mais clientes aqui em São Paulo sem burocracia, vale cadastrar seus serviços no ServiceApp (Google Play: https://play.google.com/store/apps/details?id=pl.serviceapp&pli=1 | Site: https://serviceapp.mobi). Boa sorte na captação!</textarea>
+          <button onclick="copyEl('sp-worker', 'ok-sp2')">Kopiuj PT-BR (Fachowiec SP)</button><span id="ok-sp2" class="ok"></span>
         </div>
       </div>
     </div>
 
-    <div class="grid">
-      <div class="card">
-        <h2>🇧🇷 PT-BR (Brazylia)</h2>
-        <textarea id="tpl-pt">Olá! Se ainda estiver procurando, dá uma olhada no ServiceApp (Google Play: https://play.google.com/store/apps/details?id=pl.serviceapp&pli=1 | Site: https://serviceapp.mobi). Dá para pedir orçamentos grátis e comparar profissionais avaliados na sua região!</textarea>
-        <button onclick="copyEl('tpl-pt', 'ok-pt')">Kopiuj PT-BR</button><span id="ok-pt" class="ok"></span>
+    <details class="on-hold">
+      <summary>⏸️ Pozostałe radary — ON HOLD (Meksyk, Ameryka Płd., USA, Kanada, Singapur, Japonia)</summary>
+      <div class="grid">
+        <div class="card">
+          <h3>🇲🇽🇦🇷🇨🇴🇨🇱🇵🇪 Ameryka Łacińska (On Hold)</h3>
+          <div class="links">
+            <a target="_blank" href="https://www.facebook.com/search/posts/?q=busco%20plomero%20o%20electricista">FB: "busco plomero o electricista"</a>
+            <a target="_blank" href="https://www.tiktok.com/search?q=busco%20chamba%20laburo%20oficios">TikTok: busco chamba / laburo</a>
+          </div>
+        </div>
+        <div class="card">
+          <h3>🇺🇸🇨🇦 USA &amp; Kanada (On Hold)</h3>
+          <div class="links">
+            <a target="_blank" href="https://www.facebook.com/search/posts/?q=recommend%20a%20good%20plumber%20or%20handyman">FB: "recommend a good plumber / handyman"</a>
+            <a target="_blank" href="https://www.tiktok.com/search?q=handyman%20how%20to%20get%20clients">TikTok: handyman how to get clients</a>
+          </div>
+        </div>
+        <div class="card">
+          <h3>🇸🇬🇯🇵 Singapur &amp; Japonia (On Hold)</h3>
+          <div class="links">
+            <a target="_blank" href="https://www.facebook.com/search/posts/?q=aircon%20servicing%20singapore%20recommend">FB SG: aircon servicing singapore</a>
+            <a target="_blank" href="https://www.facebook.com/search/posts/?q=%E6%B0%B4%E9%81%93%E4%BF%AE%E7%90%86%20%E3%81%8A%E3%81%99%E3%81%99%E3%82%81">FB JP: 水道修理 おすすめ</a>
+          </div>
+        </div>
       </div>
-      <div class="card">
-        <h2>🇲🇽🇦🇷🇨🇴🇨🇱🇵🇪 ES (Ameryka Łacińska)</h2>
-        <textarea id="tpl-es">¡Hola! Si todavía estás buscando, te recomiendo probar ServiceApp (Google Play: https://play.google.com/store/apps/details?id=pl.serviceapp&pli=1 | Web: https://serviceapp.mobi). Puedes pedir cotizaciones gratis y comparar reseñas de profesionales en tu zona.</textarea>
-        <button onclick="copyEl('tpl-es', 'ok-es')">Kopiuj ES</button><span id="ok-es" class="ok"></span>
-      </div>
-      <div class="card">
-        <h2>🇺🇸🇨🇦🇸🇬 EN (USA / Kanada / Singapur)</h2>
-        <textarea id="tpl-en">Hi! If you're still looking for a reliable local pro (or more local jobs), check out ServiceApp (Google Play: https://play.google.com/store/apps/details?id=pl.serviceapp&pli=1 | Web: https://serviceapp.mobi). Free quotes and rated tradespeople near you!</textarea>
-        <button onclick="copyEl('tpl-en', 'ok-en')">Kopiuj EN</button><span id="ok-en" class="ok"></span>
-      </div>
-      <div class="card">
-        <h2>🇯🇵 日本語 (Japonia)</h2>
-        <textarea id="tpl-ja">こんにちは！まだ業者をお探しでしたら、ServiceApp をチェックしてみてください（Google Play: https://play.google.com/store/apps/details?id=pl.serviceapp&pli=1 | Web: https://serviceapp.mobi）。お近くの信頼できる専門業者を比較し、無料で見積もり依頼できます。</textarea>
-        <button onclick="copyEl('tpl-ja', 'ok-ja')">Kopiuj JA</button><span id="ok-ja" class="ok"></span>
-      </div>
-    </div>
+    </details>
   </div>
   <script>
     function copyText(text, okId) {

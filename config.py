@@ -75,8 +75,43 @@ GEMINI_TIMEOUT_SECONDS = int(os.getenv("GEMINI_TIMEOUT_SECONDS") or "30")
 WEBHOOK_PORT = int(os.getenv("WEBHOOK_PORT") or "8089")
 WEBHOOK_SECRET = os.getenv("WEBHOOK_SECRET") or ""
 MAX_POST_AGE_DAYS = int(os.getenv("MAX_POST_AGE_DAYS") or "30")
-USER_AGENT = "ServiceAppSocialGroupsBot/1.1 (+https://serviceapp.mobi)"
+USER_AGENT = "ServiceAppSocialGroupsBot/1.2 (+https://serviceapp.mobi)"
 DB_PATH = os.path.join(os.path.dirname(__file__), "leads.db")
+
+# Domyślnie: wszystkie pozostałe radary wstrzymane (on hold), aktywny wyłącznie fokus na São Paulo.
+# Aby wznowić wszystkie 17 krajów: ACTIVE_COUNTRIES=ALL oraz CITY_FILTER=
+ACTIVE_COUNTRIES_RAW = (os.getenv("ACTIVE_COUNTRIES") or "BR").strip()
+CITY_FILTER = (os.getenv("CITY_FILTER") if os.getenv("CITY_FILTER") is not None else "São Paulo").strip()
+SAO_PAULO_TERMS = (
+    "são paulo",
+    "sao paulo",
+    "sampa",
+    "grande sp",
+    "capital sp",
+    "zona sul",
+    "zona leste",
+    "zona norte",
+    "zona oeste",
+    "vila mariana",
+    "pinheiros",
+    "moema",
+    "itaim",
+    "tatuapé",
+    "tatuape",
+    "itaquera",
+    "santana",
+    "lapa",
+    "morumbi",
+    "perdizes",
+    "paulista",
+    "osasco",
+    "guarulhos",
+    "santo andré",
+    "santo andre",
+    "são bernardo",
+    "sao bernardo",
+    "abc paulista",
+)
 
 COUNTRIES = {
     # --- South America (All 12) ---
@@ -208,3 +243,53 @@ def _build_public_rss_queries():
 
 
 PUBLIC_RSS_QUERIES = _build_public_rss_queries()
+
+SAO_PAULO_RSS_QUERIES = [
+    {
+        "platform": "facebook",
+        "country": "BR",
+        "channel": "Facebook Grupos (São Paulo)",
+        "hl": "pt-BR",
+        "gl": "BR",
+        "ceid": "BR:pt-419",
+        "query": 'site:facebook.com ("São Paulo" OR "Zona Sul" OR "Zona Leste" OR "Zona Norte" OR "Zona Oeste") ("preciso de encanador" OR "preciso de eletricista" OR "indicação de diarista" OR "preciso de pedreiro" OR "orçamento reforma")',
+    },
+    {
+        "platform": "tiktok",
+        "country": "BR",
+        "channel": "TikTok (São Paulo)",
+        "hl": "pt-BR",
+        "gl": "BR",
+        "ceid": "BR:pt-419",
+        "query": 'site:tiktok.com ("São Paulo" OR "SP") ("trabalho autônomo" OR "como conseguir clientes" OR "encanador" OR "eletricista" OR "diarista" OR "pedreiro")',
+    },
+    {
+        "platform": "whatsapp",
+        "country": "BR",
+        "channel": "WhatsApp Grupos (São Paulo)",
+        "hl": "pt-BR",
+        "gl": "BR",
+        "ceid": "BR:pt-419",
+        "query": '("grupo whatsapp" OR site:chat.whatsapp.com) ("São Paulo" OR "SP") ("serviços" OR "trampo" OR "diarista" OR "eletricista" OR "encanador")',
+    },
+]
+
+
+def get_active_rss_queries():
+    """Zwraca aktywne zapytania RSS (domyślnie TYLKO São Paulo; ACTIVE_COUNTRIES=ALL & CITY_FILTER= włącza 17 krajów)."""
+    if CITY_FILTER.lower() in ("são paulo", "sao paulo", "sp") and ACTIVE_COUNTRIES_RAW.upper() != "ALL":
+        return list(SAO_PAULO_RSS_QUERIES)
+    if ACTIVE_COUNTRIES_RAW.upper() == "ALL":
+        return list(PUBLIC_RSS_QUERIES)
+    allowed = {c.strip().upper() for c in ACTIVE_COUNTRIES_RAW.split(",") if c.strip()}
+    return [q for q in PUBLIC_RSS_QUERIES if q["country"] in allowed]
+
+
+def matches_city_filter(title: str, content: str, source_channel: str = "", city_filter: str = CITY_FILTER) -> bool:
+    if not city_filter:
+        return True
+    haystack = f"{source_channel} {title} {content}".lower()
+    cf = city_filter.lower()
+    if cf in ("são paulo", "sao paulo", "sp"):
+        return any(term in haystack for term in SAO_PAULO_TERMS)
+    return cf in haystack

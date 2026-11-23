@@ -76,6 +76,16 @@ class TestSocialGroupsBot(unittest.TestCase):
             self.assertEqual(lt, "SERVICE_SEEKER", f"Failed for {code}")
             self.assertIn(GOOGLE_PLAY_URL, draft)
 
+    def test_sao_paulo_only_default_mode(self):
+        from config import CITY_FILTER, get_active_rss_queries, matches_city_filter
+
+        self.assertEqual(CITY_FILTER, "São Paulo")
+        active = get_active_rss_queries()
+        self.assertEqual(len(active), 3)
+        self.assertTrue(all("São Paulo" in q["channel"] for q in active))
+        self.assertTrue(matches_city_filter("Preciso de eletricista em São Paulo", "Zona Sul"))
+        self.assertFalse(matches_city_filter("Busco plomero en Monterrey", "Nuevo León"))
+
 
 if __name__ == "__main__":
     unittest.main()

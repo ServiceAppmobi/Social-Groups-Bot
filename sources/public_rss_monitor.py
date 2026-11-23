@@ -8,7 +8,7 @@ import urllib.request
 import xml.etree.ElementTree as ET
 from typing import Any, Dict, List
 
-from config import MAX_POST_AGE_DAYS, PUBLIC_RSS_QUERIES, USER_AGENT
+from config import CITY_FILTER, MAX_POST_AGE_DAYS, USER_AGENT, get_active_rss_queries, matches_city_filter
 
 
 def _clean_html(raw: str) -> str:
@@ -78,9 +78,17 @@ class PublicSocialRSSMonitor:
 
     def scan_all(self, limit_per_query: int = 25) -> List[Dict[str, Any]]:
         all_posts: List[Dict[str, Any]] = []
-        for cfg in PUBLIC_RSS_QUERIES:
+        active_queries = get_active_rss_queries()
+        if CITY_FILTER:
+            print(f"    [Aktywny filtr miasta: {CITY_FILTER} | pozostałe radary: ON HOLD]")
+        for cfg in active_queries:
             posts = self.fetch_query(cfg, limit=limit_per_query)
-            print(f"    -> [{cfg['country']}] {cfg['channel']}: pobrano {len(posts)} publicznych wpisów")
+            if CITY_FILTER:
+                posts = [
+                    p for p in posts
+                    if matches_city_filter(p.get("title", ""), p.get("content", ""), p.get("source_channel", ""))
+                ]
+            print(f"    -> [{cfg['country']}] {cfg['channel']}: pobrano {len(posts)} pasujących wpisów")
             all_posts.extend(posts)
             time.sleep(0.3)
 
