@@ -61,18 +61,3 @@ jobs:
       - name: Zapisz bazę leads.db
         if: always() && hashFiles('leads.db') != ''
         uses: actions/cache/save@v4
-              - name: Wyślij raport mailem przez Resend
-        if: always()
-        run: |
-          curl -X POST "https://api.resend.com/emails" \
-            -H "Authorization: Bearer ${{ secrets.RESEND_API_KEY }}" \
-            -H "Content-Type: application/json" \
-            -d '{
-              "from": "ServiceApp Bot <onboarding@resend.dev>",
-              "to": ["${{ secrets.MAIL_TO }}"],
-              "subject": "Social-Groups-Bot - Raport z linkami - Run ${{ github.run_number }}",
-              "html": "<h2>ServiceApp - Raport Social-Groups-Bot</h2><p>Run: ${{ github.run_number }} | Status: ${{ job.status }}</p><p>Panel: <a href=\"https://serviceappmobi.github.io/Social-Groups-Bot/\">Otworz panel</a></p><p>Run: <a href=\"${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}\">Zobacz run na GitHubie</a></p><h3>Facebook</h3><ul><li><a href=\"https://www.facebook.com/search/posts/?q=preciso%20de%20encanador\">FB: preciso de encanador</a></li><li><a href=\"https://www.facebook.com/groups/search/?q=Servicos\">FB Grupy: Servicos</a></li></ul><h3>TikTok</h3><ul><li><a href=\"https://www.tiktok.com/search?q=encanador\">TikTok: encanador</a></li></ul><h3>WhatsApp & Lokalne</h3><ul><li><a href=\"https://www.google.com/search?q=Grupy+WhatsApp\">Google: Grupy WhatsApp</a></li><li><a href=\"https://www.reddit.com/r/saopaulo/new/\">Reddit: r/saopaulo</a></li><li><a href=\"https://mastodon.social/tags/saopaulo\">Mastodon: #saopaulo</a></li></ul><p>Pelny raport tez w Issues w repo.</p>"
-            }'
-        with:
-          path: leads.db
-          key: social-groups-db-${{ github.run_id }}
