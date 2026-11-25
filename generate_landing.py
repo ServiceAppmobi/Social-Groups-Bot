@@ -19,9 +19,6 @@ MAIN_URL = "https://serviceapp.mobi"
 PLAY_LINK = "https://play.google.com/store/apps/details?id=pl.serviceapp"
 APPSTORE_LINK = "https://apps.apple.com/ie/app/pl-serviceapp/id1253478797"
 
-APPLE_ICON = '<span style="font-size:26px">A</span>'
-PLAY_ICON = '<span style="font-size:22px">P</span>'
-
 os.makedirs("_site/landing", exist_ok=True)
 if os.path.exists("logo.png"):
     shutil.copy("logo.png", "_site/logo.png")
@@ -49,7 +46,9 @@ def make_page(service_pt, service_pl, city_slug, city_name):
 h1{{font-size:44px;line-height:.95;letter-spacing:-1.5px;margin:14px 0 12px}} .lead{{color:#64748b;font-size:20px;line-height:1.35}}
 .btn-blue{{display:flex;align-items:center;justify-content:center;text-align:center;background:linear-gradient(90deg,#38bdf8,#2563eb 55%,#1e40af);color:#fff;text-decoration:none;font-weight:800;font-size:20px;height:56px;border-radius:20px;width:100%}}
 .note{{text-align:center;color:#64748b;font-size:15px;margin:14px 0 16px}}
-.stores{{display:flex;gap:10px;width:100%}} .store{{flex:1 1 0;min-width:0;height:64px;background:#0f172a;color:#fff;border-radius:16px;padding:0 10px;display:flex;align-items:center;justify-content:center;gap:10px;text-decoration:none}} .store small{{display:block;font-size:12px;color:#cbd5e1;line-height:1.2}} .store b{{font-size:17px;line-height:1.2;white-space:nowrap}} .store span{{display:flex;flex-direction:column;align-items:flex-start}}
+.stores{{display:flex;gap:10px;width:100%}}
+.store{{flex:1 1 0;min-width:0;height:58px;background:#0f172a;color:#fff;border-radius:16px;padding:0 8px;display:flex;align-items:center;justify-content:center;gap:6px;text-decoration:none;font-size:15px;font-weight:800;white-space:nowrap;overflow:hidden}}
+.store small{{font-size:13px;font-weight:400;color:#cbd5e1;white-space:nowrap}}
 .mini{{background:#f0f7ff;border:1px solid #dbeafe;border-radius:20px;padding:16px;display:flex;gap:14px;margin-top:14px}}
 .how{{background:linear-gradient(180deg,#0ea5e9,#2563eb 55%,#1e40af);color:#fff;border-radius:32px;padding:28px 22px;margin-top:28px}} .how h2{{color:#fff}} .step{{display:flex;gap:16px;margin-top:24px}} .num{{width:52px;height:52px;background:#fff;color:#1e40af;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:22px;flex-shrink:0}} .step p{{color:#dbeafe}}
 .testi{{background:#f0f7ff;border:1px solid #dbeafe;border-radius:22px;padding:18px;margin-top:14px}} .stars{{color:#f59e0b;font-size:20px;letter-spacing:3px}}
@@ -62,14 +61,14 @@ h1{{font-size:44px;line-height:.95;letter-spacing:-1.5px;margin:14px 0 12px}} .l
 <div class="pill">Projeto para aprovacao - <a href="{MAIN_URL}" target="_blank" rel="noopener" style="color:#1e40af">serviceapp.mobi</a></div>
 <h1>{service_pl} em {city_name}</h1><p class="lead">Precisa de {service_pt} agora? Peca em 1 minuto, sem procura.</p>
 <a class="btn-blue" href="{PLAY_LINK}" target="_blank" rel="noopener">Baixar gratis</a><p class="note">Sem assinatura. Sem comissao sobre o pedido.</p>
-<div class="stores"><a class="store" href="{APPSTORE_LINK}" target="_blank" rel="noopener"><span style="width:26px;height:26px;display:flex;align-items:center;justify-content:center;flex-shrink:0">{APPLE_ICON}</span><span><small>Baixar na</small><b>App Store</b></span></a><a class="store" href="{PLAY_LINK}" target="_blank" rel="noopener"><span style="width:26px;height:26px;display:flex;align-items:center;justify-content:center;flex-shrink:0">{PLAY_ICON}</span><span><small>Baixar no</small><b>【entity-Google Play¦canonical_name=Google Play】</b></span></a></div>
+<div class="stores"><a class="store" href="{APPSTORE_LINK}" target="_blank" rel="noopener">A <small>Baixar para iPhone</small></a><a class="store" href="{PLAY_LINK}" target="_blank" rel="noopener">P <small>Baixar para Android</small></a></div>
 <div style="text-align:center;color:#64748b;font-size:14px;margin-top:18px;border-top:1px solid #e2e8f0;padding-top:16px">Simples, rapido e sem compromisso - <a href="{MAIN_URL}" target="_blank" rel="noopener" style="color:#2563eb;font-weight:700">serviceapp.mobi</a></div></div>
 <div style="margin-top:28px"><h2 style="font-size:32px">Sem procura. Sem espera desnecessaria.</h2>
 <div class="mini"><div><b>Voce nao precisa procurar prestadores</b><p style="color:#64748b">O app faz isso por voce.</p></div></div>
 <div class="mini"><div><b>Espera minima</b><p style="color:#64748b">Faca o pedido em 1 minuto e acompanhe a resposta.</p></div></div>
 <div class="mini"><div><b>Contato imediato</b><p style="color:#64748b">Se o prestador aceitar, ele entra em contato imediatamente.</p></div></div></div>
 <div class="how"><div style="color:#bae6fd;font-weight:800;letter-spacing:2px;font-size:13px">COMO FUNCIONA</div><h2 style="font-size:32px">Tres passos e pronto</h2>
-<div class="step"><div class="num">1</div><div><h3>Baixe gratis</h3><p>Instale o ServiceApp no seu celular, sem custo. <a href="{PLAY_LINK}" target="_blank" rel="noopener" style="color:#fff;font-weight:700">【entity-Google Play¦canonical_name=Google Play】</a> / <a href="{APPSTORE_LINK}" target="_blank" rel="noopener" style="color:#fff;font-weight:700">App Store</a></p></div></div>
+<div class="step"><div class="num">1</div><div><h3>Baixe gratis</h3><p>Instale o ServiceApp no seu celular, sem custo. <a href="{PLAY_LINK}" target="_blank" rel="noopener" style="color:#fff;font-weight:700">Android</a> / <a href="{APPSTORE_LINK}" target="_blank" rel="noopener" style="color:#fff;font-weight:700">iPhone</a></p></div></div>
 <div class="step"><div class="num">2</div><div><h3>Peca seu servico em 1 minuto</h3><p>Conte o que precisa, sem procurar prestador por prestador.</p></div></div>
 <div class="step"><div class="num">3</div><div><h3>O prestador entra em contato imediatamente</h3><p>Ao aceitar o pedido, ele fala direto com voce.</p></div></div></div>
 <div style="margin-top:28px"><div style="color:#2563eb;font-weight:800;letter-spacing:2px;font-size:13px">PARA PRESTADORES</div><h2 style="font-size:32px">Receba pedidos prontos para atender</h2><p style="color:#64748b">Voce recebe o pedido perto de voce, aceita em 1 clique e fala direto com o cliente.</p>
@@ -80,7 +79,7 @@ h1{{font-size:44px;line-height:.95;letter-spacing:-1.5px;margin:14px 0 12px}} .l
 <div class="testi"><div class="stars">★★★★★</div><p>Nao precisei ficar procurando ninguem. Pedi pelo app, o prestador aceitou e me ligou na hora.</p><b>Joao</b> <span style="color:#64748b">{city_name}</span></div>
 <div class="testi"><div class="stars">★★★★★</div><p>Pedi em 1 minuto. Em poucos minutos ja tinha resposta e fechei o servico.</p><b>Maria</b> <span style="color:#64748b">{city_name}</span></div></div>
 <div style="margin-top:28px"><div style="color:#2563eb;font-weight:800;letter-spacing:2px;font-size:13px">PERGUNTAS FREQUENTES</div><h2 style="font-size:32px">Duvidas rapidas</h2>
-<details class="faq" open><summary>Preciso pagar para baixar o app? <span>^</span></summary><p style="color:#64748b">Nao. O app e gratis para baixar e usar. <a href="{PLAY_LINK}" target="_blank" rel="noopener">【entity-Google Play¦canonical_name=Google Play】</a> / <a href="{APPSTORE_LINK}" target="_blank" rel="noopener">App Store</a></p></details>
+<details class="faq" open><summary>Preciso pagar para baixar o app? <span>^</span></summary><p style="color:#64748b">Nao. O app e gratis para baixar e usar. <a href="{PLAY_LINK}" target="_blank" rel="noopener">Android</a> / <a href="{APPSTORE_LINK}" target="_blank" rel="noopener">iPhone</a></p></details>
 <details class="faq"><summary>Preciso procurar os profissionais? <span>></span></summary><p style="color:#64748b">Nao. Voce cria o pedido e o app avisa os 10 prestadores mais proximos.</p></details>
 <details class="faq"><summary>Em quanto tempo recebo o contato? <span>></span></summary><p style="color:#64748b">Assim que um prestador aceitar, ele entra em contato direto com voce.</p></details></div>
 <div style="margin-top:28px;background:#fff;border:2px solid #2563eb;border-radius:20px;padding:20px">
@@ -90,8 +89,8 @@ h1{{font-size:44px;line-height:.95;letter-spacing:-1.5px;margin:14px 0 12px}} .l
 <div style="display:flex;flex-direction:column;gap:10px">{service_links}</div>
 <p style="margin-top:16px"><a href="../../" target="_blank" rel="noopener" style="color:#2563eb;font-weight:800">Wroc do Radar Panel ServiceApp</a></p>
 <p><a href="{MAIN_URL}" target="_blank" rel="noopener" style="color:#2563eb;font-weight:800">serviceapp.mobi - Strona glowna</a></p>
-<p><a href="{PLAY_LINK}" target="_blank" rel="noopener" style="color:#2563eb;font-weight:800">Pobierz z Google Play</a></p>
-<p><a href="{APPSTORE_LINK}" target="_blank" rel="noopener" style="color:#2563eb;font-weight:800">Pobierz z App Store</a></p>
+<p><a href="{PLAY_LINK}" target="_blank" rel="noopener" style="color:#2563eb;font-weight:800">Pobierz dla Android</a></p>
+<p><a href="{APPSTORE_LINK}" target="_blank" rel="noopener" style="color:#2563eb;font-weight:800">Pobierz dla iPhone</a></p>
 </div>
 <div style="text-align:center;padding:28px 0;color:#64748b"><div style="display:flex;align-items:center;justify-content:center;gap:10px;font-size:20px;font-weight:900;color:#0f172a"><a href="{MAIN_URL}" target="_blank" rel="noopener"><img src="../../logo.png" style="width:36px;height:36px;border-radius:8px;object-fit:cover"></a> Service<span style="color:#2563eb">App</span></div><p>Conta oficial ServiceApp</p><a href="{MAIN_URL}" target="_blank" rel="noopener" style="color:#1e40af;font-weight:800">serviceapp.mobi</a></div></div>
 <div class="sticky"><div><b>{service_pl} em {city_name}</b><div style="color:#64748b;font-size:14px">Gratis - Pedido em 1 minuto - <a href="{MAIN_URL}" target="_blank" rel="noopener" style="color:#2563eb">serviceapp.mobi</a></div></div><a class="btn-blue" href="{PLAY_LINK}" target="_blank" rel="noopener">Baixar gratis</a></div>
