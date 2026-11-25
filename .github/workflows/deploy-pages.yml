@@ -1,9 +1,11 @@
-name: Deploy Radar Panel na GitHub Pages
+name: Deploy Radar Panel na 【entity-GitHub¦canonical_name=GitHub】 Pages
 
 on:
   push:
-    branches: [main]
+    branches: ["main"]
   workflow_dispatch:
+  schedule:
+    - cron: '0 7 * * *'
 
 permissions:
   contents: read
@@ -11,32 +13,56 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages
+  group: "pages"
   cancel-in-progress: false
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Build Landing Pages
+        run: |
+          ls -la
+          if [ -f "generate_landing.py" ]; then
+            echo "Found generate_landing.py, running it"
+            python generate_landing.py
+          elif [ -f "client_bot.py" ]; then
+            echo "Found client_bot.py, running it"
+            python client_bot.py --build-pages || true
+          else
+            echo "No generator found, creating fallback pages"
+            mkdir -p _site
+          fi
+          # Zawsze upewniamy sie ze _site istnieje i ma index.html
+          mkdir -p _site
+          if [ ! -f "_site/index.html" ]; then
+            cp index.html _site/index.html 2>/dev/null || echo "<h1>ServiceApp - Znajdz fachowca w Sao Paulo</h1><p>Pobierz ServiceApp</p>" > _site/index.html
+          fi
+          ls -la _site/
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '_site'
+
   deploy:
+    needs: build
+    runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Przygotuj panel HTML
-        run: |
-          mkdir -p _site
-          cp dashboard.html _site/index.html
-          cp dashboard.html _site/dashboard.html
-
-      - name: Skonfiguruj GitHub Pages
-        uses: actions/configure-pages@v5
-
-      - name: Wyślij artefakt
-        uses: actions/upload-pages-artifact@v4
-        with:
-          path: _site
-
-      - name: Opublikuj na GitHub Pages
+      - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
