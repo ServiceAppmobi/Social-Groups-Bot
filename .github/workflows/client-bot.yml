@@ -23,22 +23,31 @@ jobs:
       - name: Uruchom bota do klientow
         run: python client_bot.py
 
-      - name: Wyslij gotowe odpowiedzi na email
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: smtp.gmail.com
-          server_port: 465
-          secure: true
-          username: ${{ secrets.MAIL_USERNAME }}
-          password: ${{ secrets.MAIL_PASSWORD }}
-          subject: ServiceApp - Gotowe odpowiedzi dla klientow
-          to: ${{ secrets.MAIL_TO }}
-          from: ServiceApp Bot
-          body: |
-            Bot do klientow skonczyl prace.
-            Gotowe odpowiedzi sa w zalaczniku drafts.md
-            Pamietaj: max 5-10 odpowiedzi dziennie, tylko tam gdzie ktos naprawde szuka uslugi.
-          attachments: out/drafts.md
+      - name: Wyslij gotowe odpowiedzi na email przez Resend
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          EMAIL_SENDER: ${{ secrets.EMAIL_SENDER }}
+          EMAIL_RECIPIENT: ${{ secrets.EMAIL_RECIPIENT }}
+        run: |
+          python -c "
+          import os, json, urllib.request
+          with open('out/drafts.md', encoding='utf-8') as f:
+              text = f.read()
+          data = {
+              'from': os.environ['EMAIL_SENDER'],
+              'to': [os.environ['EMAIL_RECIPIENT']],
+              'subject': 'ServiceApp - Gotowe odpowiedzi dla klientow',
+              'text': text + '\n\nPamietaj: max 5-10 odpowiedzi dziennie, tylko tam gdzie ktos naprawde szuka uslugi.'
+          }
+          req = urllib.request.Request(
+              'https://api.resend.com/emails',
+              data=json.dumps(data).encode(),
+              headers={'Authorization': 'Bearer ' + os.environ['RESEND_API_KEY'], 'Content-Type': 'application/json'},
+              method='POST'
+          )
+          print(urllib.request.urlopen(req).read().decode())
+          print('EMAIL WYSLANY')
+          "
 
       - name: Zapisz wyniki
         uses: actions/upload-artifact@v4
