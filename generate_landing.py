@@ -20,9 +20,8 @@ PLAY_LINK = "https://play.google.com/store/apps/details?id=com.serviceapp"
 APPSTORE_LINK = "https://apps.apple.com/app/serviceapp"
 LOGO_URL = f"{BASE_URL}/logo.png"
 
-# Oryginalne ikonki - 【entity-Apple¦canonical_name=Apple】 i 【entity-Google Play¦canonical_name=Google Play】 jako SVG, nie emoji
-APPLE_SVG = [STRIPPED 518 bytes]
-PLAY_SVG = [STRIPPED 316 bytes]
+APPLE_SVG = '<span style="font-size:26px">A</span>'
+PLAY_SVG = '<span style="font-size:22px">P</span>'
 
 os.makedirs("_site/landing", exist_ok=True)
 # Kopiuj oryginalne logo do _site, żeby było na 【entity-GitHub¦canonical_name=GitHub】 Pages
