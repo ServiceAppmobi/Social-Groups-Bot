@@ -1,4 +1,4 @@
-name: Deploy Radar Panel na GitHub Pages
+name: Deploy Radar Panel na 【entity-GitHub¦canonical_name=GitHub】 Pages
 
 on:
   push:
@@ -43,6 +43,7 @@ jobs:
             cp index.html _site/index.html 2>/dev/null || echo "<h1>ServiceApp</h1>" > _site/index.html
           fi
           ls -la _site/
+          ls -la _site/landing/ || echo "No landing folder"
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
